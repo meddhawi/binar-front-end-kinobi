@@ -9,8 +9,8 @@ class Register extends Component{
         this.setState({[name]: event.target.value});
     }
 
-    
 
+    
     render(){
         return(
             <div>
