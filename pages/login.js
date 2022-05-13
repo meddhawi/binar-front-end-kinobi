@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-
+import Link from 'next/link';
+import { connect } from "react-redux";
+import apiAction from '../redux/action/apiAction';
+import Layout from './components/layout';
 class Login extends Component{
     constructor(props){
         super(props);
@@ -9,30 +12,66 @@ class Login extends Component{
         this.setState({[name]: event.target.value});
     }
 
+    handleSubmit = async(event) => {
+        event.preventDefault();
+          const { email, password}  = this.state;
+          const loginData = {
+            email,
+            password
+        }
+        // Validasi
+          if(!email || !password) return alert('Please insert missing credentials!')
+          
+          await this.props.loginUser(loginData)
 
+          // console.log(this.props.auth)
+        //   if(this.props.auth.error){
+        //     alert('Login Failed! Try entering the right info!')
+        //     Router.push('/login')
+        //     await this.props.authReset()
+        //   }else{
+        //     Router.push('/')
+        //   }
+
+        Router.push('/')
+      }
 
     render(){
         return(
             <div>
+                <Layout title='Login'>
                 <div className="container-sm mt-4 text-center justify-content-center col-5">
                     <div className="container border border-dark p-4">
                         <h1>Login</h1>
-                    <form action="" method="post">
+                    <form onSubmit={this.handleSubmit}>
                         <div className="form-group mt-3">
-                            <input type="text" className="form-control" name="title" placeholder="Email" />
+                            <input 
+                            type="text" 
+                            className="form-control" 
+                            name="email" 
+                            onChange={this.set('email')}
+                            placeholder="Email" />
                         </div>
             
                         <div className="form-group mt-3">
-                            <input type="password" className="form-control" rows="3" placeholder="Password" />
+                            <input type="password" 
+                            className="form-control" 
+                            onChange={this.set('password')}
+                            placeholder="Password" />
+
                         </div>
                         <button className="col-12 mt-4 border border-secondary">Login</button>
-                        <p className="mt-2"> Dont have an account? <a href="/register">Register!</a></p>
+                        <p className="mt-2"> Dont have an account? <Link href="/register">Register!</Link></p>
                     </form>
                     </div>
                 </div>
+                </Layout>
             </div>
         )
     }
 }
 
-export default Login
+export default connect(
+    state => state,
+    apiAction
+)(Login)

@@ -11,7 +11,7 @@ import {
     UPDATE_FAILED,
     LOG_OUT,
   } from '../types'
-const url = 'https://test-binar.herokuapp.com/'
+const apiURL = 'https://test-binar.herokuapp.com/'
 
 const configJSON = {
     headers: {
@@ -19,27 +19,56 @@ const configJSON = {
     },
   }
 
-const register = (dataUser) => async (dispatch) => {
+const registerUser = (dataUser) => async (dispatch) => {
     try {
         dispatch({
             type: REGISTER_REQUEST,
           })
-        const { data } = await axios.post(`${apiURL}/register`, dataUser, configJSON)
+        const { data } = await axios.post(`${apiURL}/auth/signup`, dataUser, configJSON)
+        console.log(data)
         dispatch({
             type: REGISTER_FINISHED,
             payload: data,
         })
     } catch (error) {
-        dispatch({
-            type: REGISTER_FAILED,
-            payload: error.response.data
-          })
+        console.log(error)
     }
+}
+
+const loginUser = (dataUser) => async(dispatch) => {
+    try {
+        dispatch({
+            type: LOGIN_REQUEST,
+          })
+      
+          const { data } = await axios.post(`${apiURL}/auth/login`, dataUser, configJSON)
+          console.log(data)
+          //set localStorage here
+          localStorage.setItem('accessToken', data.result.access_token)
+          console.log(data.result.access_token)
+          console.log(localStorage.getItem('accessToken'))
+          dispatch({
+            type: LOGIN_FINISHED,
+            payload: data,
+          })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const logOut = () => async (dispatch) => {
+    console.log('Logged OUT')
+    localStorage.removeItem('accessToken')
+    dispatch({
+      type: LOG_OUT,
+    })
 }
 
 
 
 
 export default {
-    register
+    registerUser,
+    loginUser,
+    logOut
 }

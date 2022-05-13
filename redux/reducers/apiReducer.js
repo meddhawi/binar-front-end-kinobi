@@ -12,8 +12,31 @@ import {
   } from '../types'
 
 
+
+
 export const apiReducer = (state = {}, action) => {
     switch(action.type){
+        case LOGIN_REQUEST:
+            return{
+                ...state,
+                isLoading: true
+            }
+        
+        case LOGIN_FINISHED:
+            return{
+                ...state,
+                auth: action.payload,
+                isLoading: false,
+                loggedIn: true
+            }
+        
+        case LOGIN_FAILED:
+            return{
+                ...state,
+                isLoading: false,
+                error: action.payload
+            }
+
         case LOG_OUT:
             return{
                 ...state,
@@ -30,7 +53,7 @@ export const apiReducer = (state = {}, action) => {
             return{
                 ...state,
                 isLoading: false,
-                auth: action.payload,
+                // api: action.payload,
             }
         
         case REGISTER_FAILED:
@@ -39,5 +62,7 @@ export const apiReducer = (state = {}, action) => {
                 isLoading: false,
                 error: action.payload
             }
+        default:
+            return state 
     }
 }
