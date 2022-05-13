@@ -85,6 +85,19 @@
   max-width: 300px;
 }
 
+.column{
+  flex: 0 0 auto;
+  text-align: right;
+}
+
+.btncard{
+  border-radius: 0.25rem!important;
+  border: 0!important;
+}
+.btncard:hover{
+  background: white;
+  border-color: grey;
+}
 .card:hover,
 .card:focus,
 .card:active {
