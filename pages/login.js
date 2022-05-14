@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { connect } from "react-redux";
 import apiAction from '../redux/action/apiAction';
 import Layout from './components/layout';
+import Router from 'next/router';
 class Login extends Component{
     constructor(props){
         super(props);
@@ -24,14 +25,6 @@ class Login extends Component{
           
           await this.props.loginUser(loginData)
 
-          // console.log(this.props.auth)
-        //   if(this.props.auth.error){
-        //     alert('Login Failed! Try entering the right info!')
-        //     Router.push('/login')
-        //     await this.props.authReset()
-        //   }else{
-        //     Router.push('/')
-        //   }
 
         Router.push('/')
       }

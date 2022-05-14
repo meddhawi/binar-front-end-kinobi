@@ -17,12 +17,18 @@ class Navbars extends Component{
             })
         }
     }
+    loggedOut = () => {
+        this.setState({
+            logged: false
+        })
+        this.props.logOut()
+    }
 
     logStatus = () => {
         if(this.state.logged == true){
             return(
                 <>
-                    <Nav.Link className='border border-secondary ms-1' onClick={() => this.props.logOut()}>Sign Out</Nav.Link>
+                    <Nav.Link className='border btn-secondary-outline border-secondary ms-1' onClick={() => this.loggedOut()}>Sign Out</Nav.Link>
                 </>
             )
         }else if(this.state.logged == false){
@@ -44,7 +50,7 @@ class Navbars extends Component{
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">
-                            <Button variant='outline-secondary' size='sm'>Create New</Button>
+                            <Button variant='outline-secondary' size='sm' className='col'>Create New</Button>
                         </Nav>
                         <Nav>
                             {this.logStatus()}                

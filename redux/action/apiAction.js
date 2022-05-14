@@ -10,6 +10,9 @@ import {
     UPDATE_REQUEST,
     UPDATE_FAILED,
     LOG_OUT,
+    ALL_USER_FINISHED,
+    ALL_USER_REQUEST,
+    ALL_USER_FAILED
   } from '../types'
 const apiURL = 'https://test-binar.herokuapp.com/'
 
@@ -64,10 +67,33 @@ const logOut = () => async (dispatch) => {
     })
 }
 
+const getAllItem = () => async (dispatch) => {
+  const config = {
+    headers: {
+      authorization: `${localStorage.getItem('accessToken')}`,
+    },
+  }
+  try {
+    dispatch({
+      type: ALL_USER_REQUEST,
+    })
+
+    const { data } = await axios.get(`${apiURL}/v1/products`, config)
+    dispatch({
+      type: ALL_USER_FINISHED,
+      payload: data.result
+    })
+    // console.log(data.result)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 
 
 
 export default {
+    getAllItem,
     registerUser,
     loginUser,
     logOut

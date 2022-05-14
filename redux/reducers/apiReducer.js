@@ -9,6 +9,9 @@ import {
     UPDATE_REQUEST,
     UPDATE_FAILED,
     LOG_OUT,
+    ALL_USER_FINISHED,
+    ALL_USER_REQUEST,
+    ALL_USER_FAILED
   } from '../types'
 
 
@@ -57,6 +60,26 @@ export const apiReducer = (state = {}, action) => {
             }
         
         case REGISTER_FAILED:
+            return{
+                ...state,
+                isLoading: false,
+                error: action.payload
+            }
+        
+         case ALL_USER_REQUEST:
+            return{
+                ...state,
+                isLoading: true,
+            }
+        
+        case ALL_USER_FINISHED:
+            return{
+                ...state,
+                isLoading: false,
+                data: action.payload,
+            }
+        
+        case ALL_USER_FAILED:
             return{
                 ...state,
                 isLoading: false,

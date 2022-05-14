@@ -12,3 +12,7 @@ export const UPDATE_FAILED = 'UPDATE_FAILED'
 
 export const LOG_OUT = 'LOG_OUT'
 export const LOG_IN = 'LOG_IN'
+
+export const ALL_USER_REQUEST = 'ALL_USER_REQUEST'
+export const ALL_USER_FINISHED = 'ALL_USER_FINISHED'
+export const ALL_USER_FAILED = 'ALL_USER_FAILED'
