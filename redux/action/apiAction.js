@@ -12,7 +12,10 @@ import {
     LOG_OUT,
     ALL_USER_FINISHED,
     ALL_USER_REQUEST,
-    ALL_USER_FAILED
+    ALL_USER_FAILED,
+    CREATE_FINISHED,
+    CREATE_REQUEST,
+    CREATE_FAILED
   } from '../types'
 const apiURL = 'https://test-binar.herokuapp.com/'
 
@@ -21,7 +24,12 @@ const configJSON = {
       'Content-Type': 'application/json',
     },
   }
-
+const headerToken = () => {
+  if (typeof window !== 'undefined') {
+    // Perform localStorage action
+    return localStorage.getItem('accessToken')
+  }
+}
 const registerUser = (dataUser) => async (dispatch) => {
     try {
         dispatch({
@@ -52,7 +60,7 @@ const loginUser = (dataUser) => async(dispatch) => {
           console.log(localStorage.getItem('accessToken'))
           dispatch({
             type: LOGIN_FINISHED,
-            // payload: data,
+            payload: data,
           })
     } catch (error) {
         console.log(error)
@@ -90,6 +98,48 @@ const getAllItem = () => async (dispatch) => {
   }
 }
 
+const updateItem = (itemInfo, id) => async (dispatch) => {
+  const config = {
+    headers: {
+      authorization: `${localStorage.getItem('accessToken')}`,
+    },
+  }
+
+  try {
+    dispatch({
+      type: UPDATE_REQUEST,
+    })
+    const { data } = await axios.post(`${apiURL}/v1/products/${id}`, itemInfo, config)
+    dispatch({
+      type: UPDATE_FINISHED,
+      payload: data.result
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+// const addItem = (itemInfo) => async (dispatch) => {
+//   const config = {
+//     headers: {
+//       authorization: `${localStorage.getItem('accessToken')}`,
+//     },
+//   }
+
+//   try {
+//     dispatch({
+//       type: CREATE_REQUEST,
+//     })
+//     const { data } = await axios.post(`${apiURL}/v1/products/`, itemInfo, config)
+//     dispatch({
+//       type: CREATE_FINISHED,
+//       payload: data.result
+//     })
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
+
 
 
 
@@ -97,5 +147,7 @@ export default {
     getAllItem,
     registerUser,
     loginUser,
-    logOut
+    logOut,
+    updateItem,
+    // addItem
 }
