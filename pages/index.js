@@ -192,14 +192,9 @@ class ModalFormDelete extends Component{
   
   componentDidMount(){
     const {item} = this.props
-    this.setState({
-      id: item.id,
-      name: item.name,
-      price: item.price,
-      imageurl: item.imageurl
-    })
+ 
   }
-  handleUpdate = async () => {
+  handleDelete = async () => {
     const {name, price, imageurl} = this.state
     const {item} = this.props
     const config = {
@@ -214,47 +209,22 @@ class ModalFormDelete extends Component{
       imageurl
     }
     console.log('WORKING')
-    const {data} = await axios.put(`https://test-binar.herokuapp.com/v1/products/${id}`, itemInfo, {config})
+    const {data} = await axios.delete(`https://test-binar.herokuapp.com/v1/products/${id}`, config)
     console.log(data)
   }
 
   render(){
-    const {name, price, imageurl} = this.state
-    const {show, hide} = this.props
+    const {show, hide, item} = this.props
     return(
       <div>
         <Modal show={show} onHide={hide}>
           <Modal.Header closeButton>
-            <Modal.Title>Edit Product</Modal.Title>
+            <Modal.Title>Are you sure want to delete {item.name} </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form onSubmit={this.handleUpdate}>
-              <div className="form-group mt-3">
-                <Input
-                type='text'
-                name='Product Name'
-                placeholder='Product Name'
-                value={name}
-                onChange={this.set('name')} />
-              </div>
-              <div className="form-group mt-3">
-                <Input
-                type='text'
-                name='Price'
-                placeholder='Price'
-                value={price}
-                onChange={this.set('price')}/>
-              </div>
-              <div className="form-group mt-3">
-                <Input
-                type='text'
-                name='image'
-                placeholder='image url'
-                value={imageurl}
-                onChange={this.set('imageurl')}/>
-              </div>
+            <Form onSubmit={this.handleDelete}>
               <br/>
-              <Button onClick={this.handleUpdate} className="col-12 mt-4 border border-secondary">Update</Button>
+              <Button onClick={this.handleDelete} className="col-12 mt-4 border border-secondary">Yes Delete IT!</Button>
               {/* <Input placeholder='Update' className='col-12 mt-4 border border-secondary' type='submit'/> */}
 
             </Form>
@@ -325,7 +295,12 @@ class Home extends Component{
     })
   }
 
-
+  handleRemove(key){
+    this.setState({
+      showDelete :true,
+      editKey: key
+    })
+  }
   logStatus = () => {
     if(this.state.logged == true){
         return(
@@ -372,6 +347,7 @@ class Home extends Component{
         <ModalFormCreate show={showNew} type='create' hide={this.handleClose('showNew')} />
         
         {showEdit == true && editKey != null ? <ModalFormUpdate show={showEdit}  hide={this.handleClose('showEdit')} item={data[editKey]}/> : null}
+        {showDelete == true && editKey != null ? <ModalFormDelete show={showDelete}  hide={this.handleClose('showDelete')} item={data[editKey]}/> : null}
 
         <div className='container p-5 m-5 row'>
           {data != null ?
@@ -388,7 +364,7 @@ class Home extends Component{
                     <button className={`${styles.btncard}`} onClick={() => this.handleEdit(name)}>
                       <Image src="/edit.svg" alt='edit' width={20} height={20} />
                     </button>
-                    <button className={`${styles.btncard}`}>
+                    <button className={`${styles.btncard}`} onClick={() => this.handleRemove(name)}>
                       <Image src="/trash.svg" alt='edit' width={20}height={20}/>
                     </button>
                   </div>  
