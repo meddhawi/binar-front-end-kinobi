@@ -7,6 +7,7 @@ import apiAction from '../redux/action/apiAction';
 import { Navbar, Container, Nav } from 'react-bootstrap'
 import { Card, Button, Modal } from 'react-bootstrap'
 import React, { Component } from 'react'
+// import ModalForm from './components/ModalForm'
 
 class Home extends Component{
   constructor(props) {
@@ -21,17 +22,10 @@ class Home extends Component{
     }
   }
 
-  handleClose = name => event => {
-    this.setState({[name]: false});
-  }
-
-  handleOpen = name => event => {
-    this.setState({[name]: true});
-  }
   
   async componentDidMount(){
-    await this.props.getAllItem()
     if(localStorage.getItem('accessToken')){
+      await this.props.getAllItem()
       this.setState({
           logged: true
       })
@@ -79,7 +73,7 @@ logStatus = () => {
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="me-auto">
-                    <Button variant='outline-secondary' size='sm' className='col'>Create New</Button>
+                    <Button variant='outline-secondary' size='sm' className='col' onClick={this.handleOpen('showNew')}>Create New</Button>
                 </Nav>
                 <Nav>
                     {this.logStatus()}                
@@ -120,7 +114,7 @@ logStatus = () => {
                 </Card>
               )
             })
-          : <div> Loading</div> }
+          : <div> Loading </div> }
         </div>
         
         

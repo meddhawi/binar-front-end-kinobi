@@ -1,4 +1,4 @@
-import { Router } from 'next/router';
+import Router from 'next/router';
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import apiAction from '../redux/action/apiAction';

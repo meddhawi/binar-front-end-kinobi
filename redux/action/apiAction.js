@@ -45,14 +45,14 @@ const loginUser = (dataUser) => async(dispatch) => {
           })
       
           const { data } = await axios.post(`${apiURL}/auth/login`, dataUser, configJSON)
-          console.log(data)
+          console.log(data.result.access_token)
           //set localStorage here
           localStorage.setItem('accessToken', data.result.access_token)
           console.log(data.result.access_token)
           console.log(localStorage.getItem('accessToken'))
           dispatch({
             type: LOGIN_FINISHED,
-            payload: data,
+            // payload: data,
           })
     } catch (error) {
         console.log(error)
@@ -79,6 +79,7 @@ const getAllItem = () => async (dispatch) => {
     })
 
     const { data } = await axios.get(`${apiURL}/v1/products`, config)
+    console.log(data)
     dispatch({
       type: ALL_USER_FINISHED,
       payload: data.result
